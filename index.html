@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -80,21 +79,14 @@
             background-color: transparent;
             width: 100%;
             max-width: 400px;
-
-            /* Altura dinâmica da tela */
             height: calc(100vh - 100px);
             height: calc(100dvh - 100px);
-
             min-height: 400px;
-
             perspective: 1000px;
             position: relative;
             z-index: 1;
-
-            /* Centraliza a tela inicial verticalmente */
             margin-top: auto;
             margin-bottom: auto;
-
             flex-shrink: 0;
         }
 
@@ -136,8 +128,6 @@
             padding: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-
-            /* Permite que o conteúdo interno use a altura disponível */
             min-height: 0;
             overflow: hidden;
         }
@@ -349,7 +339,7 @@
             flex-shrink: 0;
         }
 
-        /* Lista do cardápio: ocupa todo o espaço restante */
+        /* Lista do cardápio */
         .cardapio-content {
             width: 100%;
             flex: 1;
@@ -371,18 +361,57 @@
             border-radius: 4px;
         }
 
-        .categoria-titulo {
-            font-size: 1rem;
-            color: var(--secondary-orange);
-            margin: 15px 0 8px 0;
-            border-bottom: 1px solid rgba(255, 140, 0, 0.2);
-            padding-bottom: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        /* Categoria recolhível */
+        .categoria-grupo {
+            margin-bottom: 12px;
         }
 
-        .categoria-titulo:first-child {
+        .categoria-titulo {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--secondary-orange);
+            margin: 15px 0 8px 0;
+            border: none;
+            border-bottom: 1px solid rgba(255, 140, 0, 0.2);
+            padding: 0 2px 8px 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: left;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .categoria-grupo:first-child .categoria-titulo {
             margin-top: 0;
+        }
+
+        .categoria-titulo:focus-visible {
+            outline: 2px solid var(--primary-orange);
+            outline-offset: 4px;
+            border-radius: 4px;
+        }
+
+        .categoria-titulo .categoria-seta {
+            font-size: 0.85rem;
+            transition: transform 0.25s ease;
+            flex-shrink: 0;
+        }
+
+        .categoria-grupo.recolhida .categoria-seta {
+            transform: rotate(-90deg);
+        }
+
+        .categoria-itens {
+            display: block;
+        }
+
+        .categoria-grupo.recolhida .categoria-itens {
+            display: none;
         }
 
         .item-cardapio {
@@ -725,6 +754,37 @@
             return url;
         }
 
+        // Escapar conteúdo dinâmico antes de inserir no HTML
+        function escaparHTML(valor) {
+            return String(valor ?? '').replace(/[&<>"']/g, caractere => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            })[caractere]);
+        }
+
+        // Alternar categoria entre aberta e recolhida
+        function alternarCategoria(botao) {
+
+            const grupo = botao.closest('.categoria-grupo');
+
+            if (!grupo) return;
+
+            const recolhida = grupo.classList.toggle('recolhida');
+
+            botao.setAttribute('aria-expanded', String(!recolhida));
+
+            const seta = botao.querySelector('.categoria-seta');
+
+            if (seta) {
+                seta.className = recolhida
+                    ? 'fa-solid fa-chevron-right categoria-seta'
+                    : 'fa-solid fa-chevron-down categoria-seta';
+            }
+        }
+
         // Carregar cardápio do KV
         async function carregarCardapio() {
 
@@ -770,7 +830,7 @@
                     (a, b) => (Number(a.ordem) || 0) - (Number(b.ordem) || 0)
                 );
 
-                categorias.forEach(cat => {
+                categorias.forEach((cat, indice) => {
 
                     const itensCat = data.itens
                         .filter(item =>
@@ -783,10 +843,23 @@
 
                     if (itensCat.length === 0) return;
 
+                    const categoriaId = `categoria-${indice}`;
+
                     html += `
-                        <div class="categoria-titulo">
-                            ${cat.nome}
-                        </div>
+                        <section class="categoria-grupo" id="${categoriaId}">
+
+                            <button
+                                type="button"
+                                class="categoria-titulo"
+                                aria-expanded="true"
+                                aria-controls="${categoriaId}-itens"
+                                onclick="alternarCategoria(this)"
+                            >
+                                <span>${escaparHTML(cat.nome)}</span>
+                                <i class="fa-solid fa-chevron-down categoria-seta"></i>
+                            </button>
+
+                            <div class="categoria-itens" id="${categoriaId}-itens">
                     `;
 
                     itensCat.forEach(item => {
@@ -794,7 +867,7 @@
                         const imgUrl = converterUrlGoogleDrive(item.imagem);
 
                         const imgTag = imgUrl
-                            ? `<img src="${imgUrl}" class="item-img" alt="${item.nome}" onerror="this.style.display='none'">`
+                            ? `<img src="${escaparHTML(imgUrl)}" class="item-img" alt="${escaparHTML(item.nome)}" onerror="this.style.display='none'">`
                             : '';
 
                         html += `
@@ -805,12 +878,12 @@
                                 <div class="item-detalhes">
 
                                     <div class="item-topo">
-                                        <span class="item-nome">${item.nome}</span>
-                                        <span class="item-preco">R$ ${item.preco}</span>
+                                        <span class="item-nome">${escaparHTML(item.nome)}</span>
+                                        <span class="item-preco">R$ ${escaparHTML(item.preco)}</span>
                                     </div>
 
                                     ${item.descricao
-                                        ? `<div class="item-descricao">${item.descricao}</div>`
+                                        ? `<div class="item-descricao">${escaparHTML(item.descricao)}</div>`
                                         : ''
                                     }
 
@@ -820,6 +893,11 @@
                         `;
 
                     });
+
+                    html += `
+                            </div>
+                        </section>
+                    `;
 
                 });
 
@@ -849,4 +927,3 @@
 
 </body>
 </html>
-```
