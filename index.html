@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -5,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dubai Comida Árabe</title>
-    <!-- Font Poppins & FontAwesome -->
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -30,13 +31,17 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        html {
+            min-height: 100%;
+        }
+
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
             min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             align-items: center;
             padding: 20px 15px;
             position: relative;
@@ -44,10 +49,9 @@
             perspective: 1000px;
         }
 
-        /* Fundo dinâmico com brilho radial suave */
         body::before {
             content: '';
-            position: absolute;
+            position: fixed;
             top: 20%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -71,15 +75,27 @@
             }
         }
 
-        /* Estrutura Flip Card 3D */
+        /* Estrutura principal do cartão */
         .flip-card {
             background-color: transparent;
             width: 100%;
             max-width: 400px;
-            height: 520px;
-            min-height: 520px;
+
+            /* Altura dinâmica da tela */
+            height: calc(100vh - 100px);
+            height: calc(100dvh - 100px);
+
+            min-height: 400px;
+
             perspective: 1000px;
             position: relative;
+            z-index: 1;
+
+            /* Centraliza a tela inicial verticalmente */
+            margin-top: auto;
+            margin-bottom: auto;
+
+            flex-shrink: 0;
         }
 
         .flip-card-inner {
@@ -109,6 +125,10 @@
             left: 0;
         }
 
+        .flip-card-front {
+            justify-content: center;
+        }
+
         .flip-card-back {
             transform: rotateY(180deg);
             background: var(--bg-card);
@@ -116,13 +136,18 @@
             padding: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+            /* Permite que o conteúdo interno use a altura disponível */
+            min-height: 0;
+            overflow: hidden;
         }
 
-        /* Container da Logo com Animação */
+        /* Logo */
         .logo-wrapper {
             position: relative;
             margin-top: 15px;
             margin-bottom: 25px;
+            flex-shrink: 0;
         }
 
         .logo-img {
@@ -167,6 +192,7 @@
         .header-text {
             text-align: center;
             margin-bottom: 25px;
+            flex-shrink: 0;
         }
 
         .header-text h1 {
@@ -181,12 +207,13 @@
             margin-top: 4px;
         }
 
-        /* Lista de Links / Ações */
+        /* Links */
         .links-container {
             width: 100%;
             display: flex;
             flex-direction: column;
             gap: 14px;
+            flex-shrink: 0;
         }
 
         .btn-link {
@@ -287,7 +314,7 @@
             letter-spacing: 0.3px;
         }
 
-        /* Estilo do Verso (Cardápio Dinâmico) */
+        /* Cabeçalho do cardápio */
         .cardapio-header {
             width: 100%;
             display: flex;
@@ -296,6 +323,8 @@
             padding-bottom: 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             margin-bottom: 15px;
+            flex-shrink: 0;
+            gap: 10px;
         }
 
         .cardapio-header h2 {
@@ -317,17 +346,22 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            flex-shrink: 0;
         }
 
+        /* Lista do cardápio: ocupa todo o espaço restante */
         .cardapio-content {
             width: 100%;
             flex: 1;
+            min-height: 0;
             overflow-y: auto;
+            overflow-x: hidden;
             text-align: left;
             padding-right: 5px;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
         }
 
-        /* Scrollbar suave para o cardápio */
         .cardapio-content::-webkit-scrollbar {
             width: 4px;
         }
@@ -372,6 +406,7 @@
 
         .item-detalhes {
             flex: 1;
+            min-width: 0;
             display: flex;
             flex-direction: column;
             gap: 2px;
@@ -381,6 +416,7 @@
             display: flex;
             justify-content: space-between;
             align-items: baseline;
+            gap: 8px;
         }
 
         .item-nome {
@@ -393,15 +429,16 @@
             font-weight: 700;
             color: var(--primary-orange);
             font-size: 0.9rem;
+            white-space: nowrap;
         }
 
         .item-descricao {
             font-size: 0.75rem;
             color: var(--text-sub);
-            line-height: 1.2;
+            line-height: 1.4;
         }
 
-        /* Mensagem Toast de Sucesso */
+        /* Toast */
         .toast {
             position: fixed;
             bottom: -100px;
@@ -421,6 +458,7 @@
             gap: 8px;
             opacity: 0;
             pointer-events: none;
+            white-space: nowrap;
         }
 
         .toast.show {
@@ -430,11 +468,13 @@
 
         /* Rodapé */
         footer {
-            margin-top: 35px;
+            margin-top: 20px;
             text-align: center;
             font-size: 0.8rem;
             color: var(--text-sub);
             z-index: 1;
+            position: relative;
+            flex-shrink: 0;
         }
 
         footer a {
@@ -448,17 +488,102 @@
         footer a:active {
             color: var(--primary-orange);
         }
+
+        /* Telas menores */
+        @media (max-width: 480px) {
+            body {
+                padding: 12px 10px;
+            }
+
+            .flip-card {
+                height: calc(100vh - 85px);
+                height: calc(100dvh - 85px);
+                min-height: 380px;
+            }
+
+            .flip-card-back {
+                padding: 15px;
+            }
+
+            .logo-img {
+                width: 130px;
+                height: 130px;
+            }
+
+            .logo-wrapper {
+                margin-bottom: 18px;
+            }
+
+            .header-text {
+                margin-bottom: 18px;
+            }
+
+            .links-container {
+                gap: 10px;
+            }
+
+            .btn-link {
+                padding: 13px 15px;
+            }
+
+            .btn-pix {
+                padding: 18px 15px;
+            }
+
+            .cardapio-header h2 {
+                font-size: 1.1rem;
+            }
+
+            .item-img {
+                width: 48px;
+                height: 48px;
+            }
+        }
+
+        /* Celulares com pouca altura */
+        @media (max-height: 650px) {
+            .flip-card {
+                min-height: 350px;
+            }
+
+            .logo-img {
+                width: 110px;
+                height: 110px;
+            }
+
+            .logo-wrapper {
+                margin-top: 5px;
+                margin-bottom: 12px;
+            }
+
+            .header-text {
+                margin-bottom: 12px;
+            }
+
+            .links-container {
+                gap: 8px;
+            }
+
+            .btn-link {
+                padding: 10px 14px;
+            }
+
+            .btn-pix {
+                padding: 14px;
+            }
+        }
     </style>
 </head>
 
 <body>
 
     <div class="flip-card" id="flipCard">
+
         <div class="flip-card-inner">
 
             <!-- FRENTE DO CARTÃO -->
             <div class="flip-card-front">
-                <!-- Logo animada -->
+
                 <div class="logo-wrapper">
                     <img src="img/logo.jpeg" alt="Dubai Comida Árabe" class="logo-img">
                 </div>
@@ -468,67 +593,74 @@
                     <p>Sua opinião é muito importante para nós!</p>
                 </div>
 
-                <!-- Botões de Ação -->
                 <div class="links-container">
-                    <!-- Botão Cardápio (Gira o Cartão) -->
+
                     <button class="btn-link btn-menu" onclick="girarCartao()">
                         <i class="fa-solid fa-utensils fa-lg"></i>
                         <span>Ver Cardápio</span>
                     </button>
 
-                    <!-- Destaque Google Reviews -->
                     <a href="https://search.google.com/local/writereview?placeid=ChIJGUyXKZ4R6JQRsSP22OmbQLU"
-                        target="_blank" class="btn-link btn-google">
+                        target="_blank" rel="noopener noreferrer" class="btn-link btn-google">
                         <i class="fa-solid fa-star"></i>
                         <span>Avalie-nos no Google</span>
                     </a>
 
-                    <!-- Instagram -->
-                    <a href="https://www.instagram.com/dubaicomidasarabes" target="_blank"
-                        class="btn-link btn-instagram">
+                    <a href="https://www.instagram.com/dubaicomidasarabes"
+                        target="_blank" rel="noopener noreferrer" class="btn-link btn-instagram">
                         <i class="fa-brands fa-instagram fa-lg"></i>
                         <span>Siga no Instagram</span>
                     </a>
 
-                    <!-- WhatsApp -->
-                    <a href="https://api.whatsapp.com/send?phone=554298144493" target="_blank"
-                        class="btn-link btn-whatsapp">
+                    <a href="https://api.whatsapp.com/send?phone=554298144493"
+                        target="_blank" rel="noopener noreferrer" class="btn-link btn-whatsapp">
                         <i class="fa-brands fa-whatsapp fa-lg"></i>
                         <span>Fale no WhatsApp</span>
                     </a>
 
-                    <!-- Botão Pix -->
                     <button class="btn-link btn-pix" onclick="copiarPix()">
                         <div class="pix-icon-box">
                             <i class="fa-solid fa-qrcode"></i>
                         </div>
+
                         <div class="pix-text-container">
                             <span>Copiar Chave Pix (CNPJ)</span>
                             <div class="pix-subtext">Toque para copiar o CNPJ</div>
                         </div>
                     </button>
+
                 </div>
+
             </div>
 
-            <!-- VERSO DO CARTÃO (CARDÁPIO KV) -->
+            <!-- VERSO DO CARTÃO -->
             <div class="flip-card-back">
+
                 <div class="cardapio-header">
-                    <h2><i class="fa-solid fa-book-open"></i> Cardápio</h2>
+                    <h2>
+                        <i class="fa-solid fa-book-open"></i>
+                        Cardápio
+                    </h2>
+
                     <button class="btn-voltar" onclick="girarCartao()">
-                        <i class="fa-solid fa-arrow-left"></i> Voltar
+                        <i class="fa-solid fa-arrow-left"></i>
+                        Voltar
                     </button>
                 </div>
+
                 <div class="cardapio-content" id="cardapioContainer">
                     <p style="text-align: center; color: var(--text-sub); margin-top: 40px;">
                         Carregando cardápio...
                     </p>
                 </div>
+
             </div>
 
         </div>
+
     </div>
 
-    <!-- Toast de Notificação -->
+    <!-- Toast -->
     <div id="toast" class="toast">
         <i class="fa-solid fa-check-circle"></i>
         <span>Chave Pix copiada com sucesso!</span>
@@ -536,42 +668,66 @@
 
     <!-- Footer -->
     <footer>
-        Desenvolvido por <a href="https://www.instagram.com/digitalcardpg" target="_blank">Digital Card</a>
+        Desenvolvido por
+        <a href="https://www.instagram.com/digitalcardpg" target="_blank" rel="noopener noreferrer">
+            Digital Card
+        </a>
     </footer>
 
     <script>
+
         function girarCartao() {
             const card = document.getElementById('flipCard');
             card.classList.toggle('flipped');
         }
 
-        function copiarPix() {
+        // Copiar Pix
+        async function copiarPix() {
+
             const chavePix = "46991044000121";
-            navigator.clipboard.writeText(chavePix).then(() => {
+
+            try {
+
+                await navigator.clipboard.writeText(chavePix);
+
                 const toast = document.getElementById("toast");
+
                 toast.classList.add("show");
+
                 setTimeout(() => {
                     toast.classList.remove("show");
                 }, 2500);
-            }).catch(err => {
-                console.error('Erro ao copiar: ', err);
-            });
+
+            } catch (err) {
+
+                console.error('Erro ao copiar:', err);
+
+                alert('Não foi possível copiar automaticamente. Verifique as permissões do navegador.');
+
+            }
         }
 
-        // Função para converter links do Google Drive em link direto de imagem
+        // Converter links do Google Drive
         function converterUrlGoogleDrive(url) {
+
             if (!url) return '';
+
             url = url.trim();
+
             const driveRegex = /(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)|lh3\.googleusercontent\.com\/d\/)([a-zA-Z0-9_-]+)/;
+
             const match = url.match(driveRegex);
+
             if (match && match[1]) {
                 return `https://lh3.googleusercontent.com/d/${match[1]}`;
             }
+
             return url;
         }
 
-        // Buscar dados do KV via Worker
+        // Carregar cardápio do KV
         async function carregarCardapio() {
+
             const container = document.getElementById('cardapioContainer');
 
             container.innerHTML = `
@@ -581,6 +737,7 @@
             `;
 
             try {
+
                 const response = await fetch('/api/cardapio', {
                     method: 'GET',
                     cache: 'no-store'
@@ -597,11 +754,13 @@
                 }
 
                 if (data.categorias.length === 0) {
+
                     container.innerHTML = `
                         <p style="text-align:center; color:var(--text-sub); margin-top:40px;">
                             Nenhuma categoria cadastrada.
                         </p>
                     `;
+
                     return;
                 }
 
@@ -612,6 +771,7 @@
                 );
 
                 categorias.forEach(cat => {
+
                     const itensCat = data.itens
                         .filter(item =>
                             String(item.categoriaId) === String(cat.id) &&
@@ -630,23 +790,37 @@
                     `;
 
                     itensCat.forEach(item => {
+
                         const imgUrl = converterUrlGoogleDrive(item.imagem);
-                        // Se houver imagem, cria a tag img; se não houver, exibe apenas os detalhes
-                        const imgTag = imgUrl ? `<img src="${imgUrl}" class="item-img" alt="${item.nome}" onerror="this.style.display='none'">` : '';
+
+                        const imgTag = imgUrl
+                            ? `<img src="${imgUrl}" class="item-img" alt="${item.nome}" onerror="this.style.display='none'">`
+                            : '';
 
                         html += `
                             <div class="item-cardapio">
+
                                 ${imgTag}
+
                                 <div class="item-detalhes">
+
                                     <div class="item-topo">
                                         <span class="item-nome">${item.nome}</span>
                                         <span class="item-preco">R$ ${item.preco}</span>
                                     </div>
-                                    ${item.descricao ? `<div class="item-descricao">${item.descricao}</div>` : ''}
+
+                                    ${item.descricao
+                                        ? `<div class="item-descricao">${item.descricao}</div>`
+                                        : ''
+                                    }
+
                                 </div>
+
                             </div>
                         `;
+
                     });
+
                 });
 
                 container.innerHTML = html || `
@@ -656,17 +830,23 @@
                 `;
 
             } catch (err) {
+
                 console.error('Erro ao carregar cardápio:', err);
+
                 container.innerHTML = `
                     <p style="text-align:center; color:#ff4444; margin-top:40px;">
                         Erro ao carregar o cardápio.
                     </p>
                 `;
+
             }
+
         }
 
         carregarCardapio();
-    </script>
-</body>
 
+    </script>
+
+</body>
 </html>
+```

@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,6 +7,7 @@
     <title>Painel do Cardápio - Dubai Comida Árabe</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         :root {
             --bg-dark: #0d0d0d;
@@ -18,45 +20,134 @@
             --red: #ff4444;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: var(--bg-dark); color: var(--text-main); padding: 20px; }
-        .admin-container { max-width: 700px; margin: 0 auto; }
-        
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 15px; }
-        h1 { font-size: 1.4rem; color: var(--primary-orange); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            padding: 20px;
+        }
+
+        .admin-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+            gap: 12px;
+        }
+
+        h1 {
+            font-size: 1.4rem;
+            color: var(--primary-orange);
+        }
 
         .btn {
-            background: var(--primary-orange); color: #fff; border: none;
-            padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600;
-            display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem;
+            background: var(--primary-orange);
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
         }
-        .btn-green { background: var(--green); }
-        .btn-outline { background: transparent; border: 1px solid var(--text-sub); color: var(--text-sub); }
-        
+
+        .btn-green {
+            background: var(--green);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--text-sub);
+            color: var(--text-sub);
+        }
+
         .section-box {
-            background: var(--bg-card); padding: 20px; border-radius: 12px;
-            margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05);
+            background: var(--bg-card);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        .section-title { font-size: 1.1rem; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .section-title {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
 
-        form { display: grid; gap: 12px; }
+        form {
+            display: grid;
+            gap: 12px;
+        }
+
         input, select, textarea {
-            width: 100%; padding: 12px; background: var(--bg-input);
-            border: 1px solid #333; border-radius: 8px; color: #fff; font-size: 0.95rem;
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-input);
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.95rem;
         }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary-orange); }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-orange);
+        }
 
         .list-item {
-            display: flex; align-items: center; justify-content: space-between;
-            background: var(--bg-input); padding: 12px 16px; border-radius: 8px; margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-input);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            gap: 10px;
         }
-        .item-info { display: flex; flex-direction: column; gap: 3px; }
-        .item-title { font-weight: 600; font-size: 0.95rem; }
-        .item-desc { font-size: 0.8rem; color: var(--text-sub); }
-        .item-price { color: var(--primary-orange); font-weight: 600; font-size: 0.9rem; }
-        
-        /* Thumbnail da imagem no painel */
+
+        .item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 0;
+        }
+
+        .item-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .item-desc {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+        }
+
+        .item-price {
+            color: var(--primary-orange);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
         .item-thumb {
             width: 50px;
             height: 50px;
@@ -64,318 +155,796 @@
             object-fit: cover;
             background: #333;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            flex-shrink: 0;
         }
 
-        .actions { display: flex; gap: 8px; }
-        .btn-icon { background: none; border: none; color: var(--text-sub); cursor: pointer; font-size: 1.1rem; padding: 5px; }
-        .btn-icon:hover { color: #fff; }
-        .btn-icon.delete:hover { color: var(--red); }
-        
-        .order-controls { display: flex; flex-direction: column; gap: 2px; }
-        .order-btn { background: none; border: none; color: var(--text-sub); cursor: pointer; font-size: 0.8rem; }
-        .order-btn:hover { color: var(--primary-orange); }
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
 
-        .badge-disabled { font-size: 0.75rem; color: var(--red); border: 1px solid var(--red); padding: 2px 6px; border-radius: 4px; }
+        .btn-icon {
+            background: none;
+            border: none;
+            color: var(--text-sub);
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 5px;
+        }
+
+        .btn-icon:hover {
+            color: #fff;
+        }
+
+        .btn-icon.delete:hover {
+            color: var(--red);
+        }
+
+        .btn-icon.duplicate:hover {
+            color: var(--primary-orange);
+        }
+
+        .order-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex-shrink: 0;
+        }
+
+        .order-btn {
+            background: none;
+            border: none;
+            color: var(--text-sub);
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .order-btn:hover {
+            color: var(--primary-orange);
+        }
+
+        .badge-disabled {
+            font-size: 0.75rem;
+            color: var(--red);
+            border: 1px solid var(--red);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
 
         /* Modal */
         .modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; padding: 15px; z-index: 10;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            z-index: 10;
         }
-        .modal.active { display: flex; }
-        .modal-content { background: var(--bg-card); width: 100%; max-width: 500px; padding: 25px; border-radius: 12px; }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            width: 100%;
+            max-width: 500px;
+            padding: 25px;
+            border-radius: 12px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @media (max-width: 520px) {
+            body {
+                padding: 12px;
+            }
+
+            header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .section-title {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .list-item {
+                padding: 10px;
+            }
+
+            .item-thumb {
+                width: 42px;
+                height: 42px;
+            }
+
+            .actions {
+                gap: 4px;
+            }
+        }
     </style>
 </head>
+
 <body>
 
     <div class="admin-container">
+
         <header>
-            <h1><i class="fa-solid fa-utensils"></i> Gerenciador de Cardápio</h1>
-            <button class="btn btn-green" onclick="salvarNoKV()"><i class="fa-solid fa-cloud-arrow-up"></i> Salvar no KV</button>
+            <h1>
+                <i class="fa-solid fa-utensils"></i>
+                Gerenciador de Cardápio
+            </h1>
+
+            <button class="btn btn-green" onclick="salvarNoKV()">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                Salvar no KV
+            </button>
         </header>
 
-        <!-- Seção Categorias -->
+        <!-- Categorias -->
         <div class="section-box">
+
             <div class="section-title">
                 <span>Categorias</span>
-                <button class="btn btn-outline" onclick="abrirModalCategoria()"><i class="fa-solid fa-plus"></i> Nova Categoria</button>
+
+                <button class="btn btn-outline" onclick="abrirModalCategoria()">
+                    <i class="fa-solid fa-plus"></i>
+                    Nova Categoria
+                </button>
             </div>
+
             <div id="categoriasList"></div>
+
         </div>
 
-        <!-- Seção Itens -->
+        <!-- Itens -->
         <div class="section-box">
+
             <div class="section-title">
                 <span>Itens do Cardápio</span>
-                <button class="btn" onclick="abrirModalItem()"><i class="fa-solid fa-plus"></i> Novo Item</button>
+
+                <button class="btn" onclick="abrirModalItem()">
+                    <i class="fa-solid fa-plus"></i>
+                    Novo Item
+                </button>
             </div>
+
             <div id="itensList"></div>
+
         </div>
+
     </div>
 
     <!-- Modal Categoria -->
     <div id="modalCategoria" class="modal">
+
         <div class="modal-content">
-            <h3 style="margin-bottom:15px;" id="titleModalCat">Nova Categoria</h3>
+
+            <h3 style="margin-bottom:15px;" id="titleModalCat">
+                Nova Categoria
+            </h3>
+
             <form id="formCategoria" onsubmit="salvarCategoria(event)">
+
                 <input type="hidden" id="catId">
-                <input type="text" id="catNome" placeholder="Nome da Categoria (Ex: Shawarmas)" required>
+
+                <input
+                    type="text"
+                    id="catNome"
+                    placeholder="Nome da Categoria (Ex: Shawarmas)"
+                    required
+                >
+
                 <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
-                    <button type="button" class="btn btn-outline" onclick="fecharModais()">Cancelar</button>
-                    <button type="submit" class="btn">Salvar</button>
+
+                    <button type="button" class="btn btn-outline" onclick="fecharModais()">
+                        Cancelar
+                    </button>
+
+                    <button type="submit" class="btn">
+                        Salvar
+                    </button>
+
                 </div>
+
             </form>
+
         </div>
+
     </div>
 
     <!-- Modal Item -->
     <div id="modalItem" class="modal">
+
         <div class="modal-content">
-            <h3 style="margin-bottom:15px;" id="titleModalItem">Novo Item</h3>
+
+            <h3 style="margin-bottom:15px;" id="titleModalItem">
+                Novo Item
+            </h3>
+
             <form id="formItem" onsubmit="salvarItem(event)">
+
                 <input type="hidden" id="itemId">
+
                 <select id="itemCategoria" required></select>
-                <input type="text" id="itemNome" placeholder="Nome do Prato / Bebida" required>
-                <textarea id="itemDescricao" placeholder="Descrição / Ingredientes" rows="3"></textarea>
-                <input type="text" id="itemPreco" placeholder="Preço (Ex: 25.00)" required>
-                <input type="url" id="itemImagem" placeholder="URL da Imagem (ou Link do Google Drive)">
+
+                <input
+                    type="text"
+                    id="itemNome"
+                    placeholder="Nome do Prato / Bebida"
+                    required
+                >
+
+                <textarea
+                    id="itemDescricao"
+                    placeholder="Descrição / Ingredientes"
+                    rows="3"
+                ></textarea>
+
+                <input
+                    type="text"
+                    id="itemPreco"
+                    placeholder="Preço (Ex: 25.00)"
+                    required
+                >
+
+                <input
+                    type="url"
+                    id="itemImagem"
+                    placeholder="URL da Imagem (ou Link do Google Drive)"
+                >
+
                 <label style="display:flex; align-items:center; gap:8px; font-size:0.9rem; cursor:pointer;">
-                    <input type="checkbox" id="itemDisponivel" checked style="width:auto;"> Item Disponível no Cardápio
+
+                    <input
+                        type="checkbox"
+                        id="itemDisponivel"
+                        checked
+                        style="width:auto;"
+                    >
+
+                    Item Disponível no Cardápio
+
                 </label>
+
                 <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
-                    <button type="button" class="btn btn-outline" onclick="fecharModais()">Cancelar</button>
-                    <button type="submit" class="btn">Salvar Item</button>
+
+                    <button type="button" class="btn btn-outline" onclick="fecharModais()">
+                        Cancelar
+                    </button>
+
+                    <button type="submit" class="btn">
+                        Salvar Item
+                    </button>
+
                 </div>
+
             </form>
+
         </div>
+
     </div>
 
     <script>
-        let db = { categorias: [], itens: [] };
 
-        // Função para converter links do Google Drive em link direto de imagem
+        let db = {
+            categorias: [],
+            itens: []
+        };
+
+        // Converter links do Google Drive em link direto de imagem
         function converterUrlGoogleDrive(url) {
+
             if (!url) return '';
+
             url = url.trim();
-            
-            // Padrão do Google Drive (file/d/ID ou id=ID)
+
             const driveRegex = /(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)|lh3\.googleusercontent\.com\/d\/)([a-zA-Z0-9_-]+)/;
+
             const match = url.match(driveRegex);
-            
+
             if (match && match[1]) {
-                // Retorna URL direta universal de imagem do Google Drive
                 return `https://lh3.googleusercontent.com/d/${match[1]}`;
             }
+
             return url;
         }
 
+        // Carregar dados do KV
         async function carregarDados() {
+
             try {
+
                 const res = await fetch('/api/cardapio');
-                if(res.ok) {
+
+                if (res.ok) {
+
                     const data = await res.json();
-                    if(data && data.categorias) db = data;
+
+                    if (data && data.categorias) {
+                        db = data;
+                    }
+
                 }
-            } catch(e) {
+
+            } catch (e) {
+
                 console.error("Erro ao buscar KV", e);
+
             }
+
             render();
+
         }
 
+        // Salvar dados no KV
         async function salvarNoKV() {
+
             try {
+
                 const res = await fetch('/api/cardapio', {
+
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+
                     body: JSON.stringify(db)
+
                 });
-                if(res.ok) alert('Cardápio salvo no KV com sucesso!');
-                else alert('Erro ao salvar no KV.');
-            } catch(e) {
+
+                if (res.ok) {
+                    alert('Cardápio salvo no KV com sucesso!');
+                } else {
+                    alert('Erro ao salvar no KV.');
+                }
+
+            } catch (e) {
+
                 alert('Falha na requisição.');
+
             }
+
         }
 
+        // Renderizar categorias e itens
         function render() {
-            // Render Categorias
+
+            // Categorias
             const catContainer = document.getElementById('categoriasList');
+
             catContainer.innerHTML = '';
-            db.categorias.sort((a,b) => a.ordem - b.ordem).forEach((c, idx) => {
-                catContainer.innerHTML += `
-                    <div class="list-item">
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <div class="order-controls">
-                                <button class="order-btn" onclick="moverCategoria(${idx}, -1)"><i class="fa-solid fa-chevron-up"></i></button>
-                                <button class="order-btn" onclick="moverCategoria(${idx}, 1)"><i class="fa-solid fa-chevron-down"></i></button>
-                            </div>
-                            <span class="item-title">${c.nome}</span>
-                        </div>
-                        <div class="actions">
-                            <button class="btn-icon" onclick="editarCategoria('${c.id}')"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn-icon delete" onclick="excluirCategoria('${c.id}')"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                `;
-            });
 
-            // Render Itens
+            db.categorias
+                .sort((a, b) => a.ordem - b.ordem)
+                .forEach((c, idx) => {
+
+                    catContainer.innerHTML += `
+                        <div class="list-item">
+
+                            <div style="display:flex; align-items:center; gap:10px;">
+
+                                <div class="order-controls">
+
+                                    <button class="order-btn" onclick="moverCategoria(${idx}, -1)">
+                                        <i class="fa-solid fa-chevron-up"></i>
+                                    </button>
+
+                                    <button class="order-btn" onclick="moverCategoria(${idx}, 1)">
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </button>
+
+                                </div>
+
+                                <span class="item-title">${c.nome}</span>
+
+                            </div>
+
+                            <div class="actions">
+
+                                <button class="btn-icon" onclick="editarCategoria('${c.id}')" title="Editar categoria">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+
+                                <button class="btn-icon delete" onclick="excluirCategoria('${c.id}')" title="Excluir categoria">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+
+                            </div>
+
+                        </div>
+                    `;
+
+                });
+
+            // Itens
             const itemContainer = document.getElementById('itensList');
+
             itemContainer.innerHTML = '';
-            db.itens.sort((a,b) => a.ordem - b.ordem).forEach((item, idx) => {
-                const cat = db.categorias.find(c => c.id === item.categoriaId);
-                const catNome = cat ? cat.nome : 'Sem Categoria';
-                const imgHtml = item.imagem ? `<img src="${item.imagem}" class="item-thumb" alt="${item.nome}" onerror="this.style.display='none'">` : '';
 
-                itemContainer.innerHTML += `
-                    <div class="list-item">
-                        <div style="display:flex; align-items:center; gap:12px;">
-                            <div class="order-controls">
-                                <button class="order-btn" onclick="moverItem(${idx}, -1)"><i class="fa-solid fa-chevron-up"></i></button>
-                                <button class="order-btn" onclick="moverItem(${idx}, 1)"><i class="fa-solid fa-chevron-down"></i></button>
+            db.itens
+                .sort((a, b) => a.ordem - b.ordem)
+                .forEach((item, idx) => {
+
+                    const cat = db.categorias.find(c => c.id === item.categoriaId);
+
+                    const catNome = cat ? cat.nome : 'Sem Categoria';
+
+                    const imgHtml = item.imagem
+                        ? `<img src="${item.imagem}" class="item-thumb" alt="${item.nome}" onerror="this.style.display='none'">`
+                        : '';
+
+                    itemContainer.innerHTML += `
+
+                        <div class="list-item">
+
+                            <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+
+                                <div class="order-controls">
+
+                                    <button class="order-btn" onclick="moverItem(${idx}, -1)">
+                                        <i class="fa-solid fa-chevron-up"></i>
+                                    </button>
+
+                                    <button class="order-btn" onclick="moverItem(${idx}, 1)">
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </button>
+
+                                </div>
+
+                                ${imgHtml}
+
+                                <div class="item-info">
+
+                                    <span class="item-title">
+                                        ${item.nome}
+                                        ${!item.disponivel ? '<span class="badge-disabled">Pausado</span>' : ''}
+                                    </span>
+
+                                    <span class="item-desc">
+                                        [${catNome}] ${item.descricao || ''}
+                                    </span>
+
+                                    <span class="item-price">
+                                        R$ ${item.preco}
+                                    </span>
+
+                                </div>
+
                             </div>
-                            ${imgHtml}
-                            <div class="item-info">
-                                <span class="item-title">${item.nome} ${!item.disponivel ? '<span class="badge-disabled">Pausado</span>' : ''}</span>
-                                <span class="item-desc">[${catNome}] ${item.descricao || ''}</span>
-                                <span class="item-price">R$ ${item.preco}</span>
+
+                            <div class="actions">
+
+                                <!-- BOTÃO DUPLICAR -->
+                                <button
+                                    class="btn-icon duplicate"
+                                    onclick="duplicarItem('${item.id}')"
+                                    title="Duplicar item"
+                                >
+                                    <i class="fa-solid fa-copy"></i>
+                                </button>
+
+                                <!-- BOTÃO EDITAR -->
+                                <button
+                                    class="btn-icon"
+                                    onclick="editarItem('${item.id}')"
+                                    title="Editar item"
+                                >
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+
+                                <!-- BOTÃO EXCLUIR -->
+                                <button
+                                    class="btn-icon delete"
+                                    onclick="excluirItem('${item.id}')"
+                                    title="Excluir item"
+                                >
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+
                             </div>
+
                         </div>
-                        <div class="actions">
-                            <button class="btn-icon" onclick="editarItem('${item.id}')"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn-icon delete" onclick="excluirItem('${item.id}')"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                `;
-            });
+
+                    `;
+
+                });
+
         }
 
-        // Modais e Operações
+        // Fechar modais
         function fecharModais() {
-            document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+
+            document.querySelectorAll('.modal').forEach(m => {
+                m.classList.remove('active');
+            });
+
         }
 
+        // Abrir modal de categoria
         function abrirModalCategoria() {
+
             document.getElementById('catId').value = '';
             document.getElementById('catNome').value = '';
+
             document.getElementById('titleModalCat').innerText = 'Nova Categoria';
+
             document.getElementById('modalCategoria').classList.add('active');
+
         }
 
+        // Salvar categoria
         function salvarCategoria(e) {
+
             e.preventDefault();
+
             const id = document.getElementById('catId').value;
+
             const nome = document.getElementById('catNome').value;
 
-            if(id) {
+            if (id) {
+
                 const c = db.categorias.find(x => x.id === id);
-                if(c) c.nome = nome;
+
+                if (c) c.nome = nome;
+
             } else {
-                db.categorias.push({ id: 'cat_' + Date.now(), nome, ordem: db.categorias.length + 1 });
+
+                db.categorias.push({
+
+                    id: 'cat_' + Date.now(),
+
+                    nome,
+
+                    ordem: db.categorias.length + 1
+
+                });
+
             }
+
             fecharModais();
+
             render();
+
         }
 
+        // Editar categoria
         function editarCategoria(id) {
+
             const c = db.categorias.find(x => x.id === id);
-            if(!c) return;
+
+            if (!c) return;
+
             document.getElementById('catId').value = c.id;
+
             document.getElementById('catNome').value = c.nome;
+
             document.getElementById('titleModalCat').innerText = 'Editar Categoria';
+
             document.getElementById('modalCategoria').classList.add('active');
+
         }
 
+        // Excluir categoria
         function excluirCategoria(id) {
-            if(confirm('Deseja excluir esta categoria?')) {
+
+            if (confirm('Deseja excluir esta categoria?')) {
+
                 db.categorias = db.categorias.filter(c => c.id !== id);
+
                 render();
+
             }
+
         }
 
+        // Mover categoria
         function moverCategoria(idx, dir) {
+
             const novoIdx = idx + dir;
-            if(novoIdx < 0 || novoIdx >= db.categorias.length) return;
+
+            if (novoIdx < 0 || novoIdx >= db.categorias.length) return;
+
             const temp = db.categorias[idx];
+
             db.categorias[idx] = db.categorias[novoIdx];
+
             db.categorias[novoIdx] = temp;
-            db.categorias.forEach((c, i) => c.ordem = i + 1);
+
+            db.categorias.forEach((c, i) => {
+                c.ordem = i + 1;
+            });
+
             render();
+
         }
 
+        // Abrir modal de item
         function abrirModalItem() {
-            if(db.categorias.length === 0) return alert('Crie pelo menos uma categoria antes de adicionar itens!');
+
+            if (db.categorias.length === 0) {
+                return alert('Crie pelo menos uma categoria antes de adicionar itens!');
+            }
+
             document.getElementById('itemId').value = '';
             document.getElementById('itemNome').value = '';
             document.getElementById('itemDescricao').value = '';
             document.getElementById('itemPreco').value = '';
             document.getElementById('itemImagem').value = '';
             document.getElementById('itemDisponivel').checked = true;
+
             document.getElementById('titleModalItem').innerText = 'Novo Item';
 
             const sel = document.getElementById('itemCategoria');
-            sel.innerHTML = db.categorias.map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
+
+            sel.innerHTML = db.categorias
+                .map(c => `<option value="${c.id}">${c.nome}</option>`)
+                .join('');
 
             document.getElementById('modalItem').classList.add('active');
+
         }
 
+        // Salvar item
         function salvarItem(e) {
+
             e.preventDefault();
+
             const id = document.getElementById('itemId').value;
+
             const rawUrl = document.getElementById('itemImagem').value;
 
             const itemData = {
+
                 categoriaId: document.getElementById('itemCategoria').value,
+
                 nome: document.getElementById('itemNome').value,
+
                 descricao: document.getElementById('itemDescricao').value,
+
                 preco: document.getElementById('itemPreco').value,
+
                 imagem: converterUrlGoogleDrive(rawUrl),
+
                 disponivel: document.getElementById('itemDisponivel').checked
+
             };
 
-            if(id) {
+            if (id) {
+
                 const item = db.itens.find(x => x.id === id);
-                if(item) Object.assign(item, itemData);
+
+                if (item) {
+                    Object.assign(item, itemData);
+                }
+
             } else {
+
                 itemData.id = 'item_' + Date.now();
+
                 itemData.ordem = db.itens.length + 1;
+
                 db.itens.push(itemData);
+
             }
+
             fecharModais();
+
             render();
+
         }
 
+        // Editar item
         function editarItem(id) {
+
             const item = db.itens.find(x => x.id === id);
-            if(!item) return;
+
+            if (!item) return;
+
             abrirModalItem();
+
             document.getElementById('itemId').value = item.id;
+
             document.getElementById('itemCategoria').value = item.categoriaId;
+
             document.getElementById('itemNome').value = item.nome;
-            document.getElementById('itemDescricao').value = item.descricao;
+
+            document.getElementById('itemDescricao').value = item.descricao || '';
+
             document.getElementById('itemPreco').value = item.preco;
+
             document.getElementById('itemImagem').value = item.imagem || '';
-            document.getElementById('itemDisponivel').checked = item.disponivel;
+
+            document.getElementById('itemDisponivel').checked = item.disponivel !== false;
+
             document.getElementById('titleModalItem').innerText = 'Editar Item';
+
         }
 
-        function excluirItem(id) {
-            if(confirm('Deseja excluir este item?')) {
-                db.itens = db.itens.filter(i => i.id !== id);
-                render();
+        // NOVA FUNÇÃO: Duplicar item
+        function duplicarItem(id) {
+
+            const item = db.itens.find(x => x.id === id);
+
+            if (!item) return;
+
+            if (db.categorias.length === 0) {
+                return alert('Crie pelo menos uma categoria antes de adicionar itens!');
             }
+
+            // Abre o formulário limpo e carrega as categorias
+            abrirModalItem();
+
+            // Mantém ID vazio para criar um novo registro
+            document.getElementById('itemId').value = '';
+
+            // Copia os dados do item original
+            document.getElementById('itemCategoria').value = item.categoriaId;
+
+            document.getElementById('itemNome').value = item.nome + ' (Cópia)';
+
+            document.getElementById('itemDescricao').value = item.descricao || '';
+
+            document.getElementById('itemPreco').value = item.preco;
+
+            document.getElementById('itemImagem').value = item.imagem || '';
+
+            document.getElementById('itemDisponivel').checked = item.disponivel !== false;
+
+            // Identifica a operação no modal
+            document.getElementById('titleModalItem').innerText = 'Duplicar Item';
+
+            // Facilita a edição do nome
+            document.getElementById('itemNome').focus();
+
         }
 
+        // Excluir item
+        function excluirItem(id) {
+
+            if (confirm('Deseja excluir este item?')) {
+
+                db.itens = db.itens.filter(i => i.id !== id);
+
+                render();
+
+            }
+
+        }
+
+        // Mover item
         function moverItem(idx, dir) {
+
             const novoIdx = idx + dir;
-            if(novoIdx < 0 || novoIdx >= db.itens.length) return;
+
+            if (novoIdx < 0 || novoIdx >= db.itens.length) return;
+
             const temp = db.itens[idx];
+
             db.itens[idx] = db.itens[novoIdx];
+
             db.itens[novoIdx] = temp;
-            db.itens.forEach((it, i) => it.ordem = i + 1);
+
+            db.itens.forEach((it, i) => {
+                it.ordem = i + 1;
+            });
+
             render();
+
         }
 
+        // Inicializar painel
         carregarDados();
+
     </script>
+
 </body>
 </html>
