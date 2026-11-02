@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Cardápio - Dubai Comida Árabe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0d0d0d;
+            --bg-card: #181818;
+            --bg-input: #242424;
+            --primary-orange: #ff5722;
+            --text-main: #ffffff;
+            --text-sub: #b3b3b3;
+            --green: #25d366;
+            --red: #ff4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-main); padding: 20px; }
+        .admin-container { max-width: 700px; margin: 0 auto; }
+        
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        h1 { font-size: 1.4rem; color: var(--primary-orange); }
+
+        .btn {
+            background: var(--primary-orange); color: #fff; border: none;
+            padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600;
+            display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem;
+        }
+        .btn-green { background: var(--green); }
+        .btn-outline { background: transparent; border: 1px solid var(--text-sub); color: var(--text-sub); }
+        
+        .section-box {
+            background: var(--bg-card); padding: 20px; border-radius: 12px;
+            margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .section-title { font-size: 1.1rem; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+
+        form { display: grid; gap: 12px; }
+        input, select, textarea {
+            width: 100%; padding: 12px; background: var(--bg-input);
+            border: 1px solid #333; border-radius: 8px; color: #fff; font-size: 0.95rem;
+        }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary-orange); }
+
+        .list-item {
+            display: flex; align-items: center; justify-content: space-between;
+            background: var(--bg-input); padding: 12px 16px; border-radius: 8px; margin-bottom: 8px;
+        }
+        .item-info { display: flex; flex-direction: column; gap: 3px; }
+        .item-title { font-weight: 600; font-size: 0.95rem; }
+        .item-desc { font-size: 0.8rem; color: var(--text-sub); }
+        .item-price { color: var(--primary-orange); font-weight: 600; font-size: 0.9rem; }
+        
+        .actions { display: flex; gap: 8px; }
+        .btn-icon { background: none; border: none; color: var(--text-sub); cursor: pointer; font-size: 1.1rem; padding: 5px; }
+        .btn-icon:hover { color: #fff; }
+        .btn-icon.delete:hover { color: var(--red); }
+        
+        .order-controls { display: flex; flex-direction: column; gap: 2px; }
+        .order-btn { background: none; border: none; color: var(--text-sub); cursor: pointer; font-size: 0.8rem; }
+        .order-btn:hover { color: var(--primary-orange); }
+
+        .badge-disabled { font-size: 0.75rem; color: var(--red); border: 1px solid var(--red); padding: 2px 6px; border-radius: 4px; }
+
+        /* Modal */
+        .modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; padding: 15px; z-index: 10;
+        }
+        .modal.active { display: flex; }
+        .modal-content { background: var(--bg-card); width: 100%; max-width: 500px; padding: 25px; border-radius: 12px; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-container">
+        <header>
+            <h1><i class="fa-solid fa-utensils"></i> Gerenciador de Cardápio</h1>
+            <button class="btn btn-green" onclick="salvarNoKV()"><i class="fa-solid fa-cloud-arrow-up"></i> Salvar no KV</button>
+        </header>
+
+        <!-- Seção Categorias -->
+        <div class="section-box">
+            <div class="section-title">
+                <span>Categorias</span>
+                <button class="btn btn-outline" onclick="abrirModalCategoria()"><i class="fa-solid fa-plus"></i> Nova Categoria</button>
+            </div>
+            <div id="categoriasList"></div>
+        </div>
+
+        <!-- Seção Itens -->
+        <div class="section-box">
+            <div class="section-title">
+                <span>Itens do Cardápio</span>
+                <button class="btn" onclick="abrirModalItem()"><i class="fa-solid fa-plus"></i> Novo Item</button>
+            </div>
+            <div id="itensList"></div>
+        </div>
+    </div>
+
+    <!-- Modal Categoria -->
+    <div id="modalCategoria" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-bottom:15px;" id="titleModalCat">Nova Categoria</h3>
+            <form id="formCategoria" onsubmit="salvarCategoria(event)">
+                <input type="hidden" id="catId">
+                <input type="text" id="catNome" placeholder="Nome da Categoria (Ex: Shawarmas)" required>
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
+                    <button type="button" class="btn btn-outline" onclick="fecharModais()">Cancelar</button>
+                    <button type="submit" class="btn">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Item -->
+    <div id="modalItem" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-bottom:15px;" id="titleModalItem">Novo Item</h3>
+            <form id="formItem" onsubmit="salvarItem(event)">
+                <input type="hidden" id="itemId">
+                <select id="itemCategoria" required></select>
+                <input type="text" id="itemNome" placeholder="Nome do Prato / Bebida" required>
+                <textarea id="itemDescricao" placeholder="Descrição / Ingredientes" rows="3"></textarea>
+                <input type="text" id="itemPreco" placeholder="Preço (Ex: 25.00)" required>
+                <label style="display:flex; align-items:center; gap:8px; font-size:0.9rem; cursor:pointer;">
+                    <input type="checkbox" id="itemDisponivel" checked style="width:auto;"> Item Disponível no Cardápio
+                </label>
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
+                    <button type="button" class="btn btn-outline" onclick="fecharModais()">Cancelar</button>
+                    <button type="submit" class="btn">Salvar Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let db = { categorias: [], itens: [] };
+
+        async function carregarDados() {
+            try {
+                const res = await fetch('/api/cardapio');
+                if(res.ok) {
+                    const data = await res.json();
+                    if(data && data.categorias) db = data;
+                }
+            } catch(e) {
+                console.error("Erro ao buscar KV", e);
+            }
+            render();
+        }
+
+        async function salvarNoKV() {
+            try {
+                const res = await fetch('/api/cardapio', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(db)
+                });
+                if(res.ok) alert('Cardápio salvo no KV com sucesso!');
+                else alert('Erro ao salvar no KV.');
+            } catch(e) {
+                alert('Falha na requisição.');
+            }
+        }
+
+        function render() {
+            // Render Categorias
+            const catContainer = document.getElementById('categoriasList');
+            catContainer.innerHTML = '';
+            db.categorias.sort((a,b) => a.ordem - b.ordem).forEach((c, idx) => {
+                catContainer.innerHTML += `
+                    <div class="list-item">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div class="order-controls">
+                                <button class="order-btn" onclick="moverCategoria(${idx}, -1)"><i class="fa-solid fa-chevron-up"></i></button>
+                                <button class="order-btn" onclick="moverCategoria(${idx}, 1)"><i class="fa-solid fa-chevron-down"></i></button>
+                            </div>
+                            <span class="item-title">${c.nome}</span>
+                        </div>
+                        <div class="actions">
+                            <button class="btn-icon" onclick="editarCategoria('${c.id}')"><i class="fa-solid fa-pen"></i></button>
+                            <button class="btn-icon delete" onclick="excluirCategoria('${c.id}')"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Render Itens
+            const itemContainer = document.getElementById('itensList');
+            itemContainer.innerHTML = '';
+            db.itens.sort((a,b) => a.ordem - b.ordem).forEach((item, idx) => {
+                const cat = db.categorias.find(c => c.id === item.categoriaId);
+                const catNome = cat ? cat.nome : 'Sem Categoria';
+                itemContainer.innerHTML += `
+                    <div class="list-item">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div class="order-controls">
+                                <button class="order-btn" onclick="moverItem(${idx}, -1)"><i class="fa-solid fa-chevron-up"></i></button>
+                                <button class="order-btn" onclick="moverItem(${idx}, 1)"><i class="fa-solid fa-chevron-down"></i></button>
+                            </div>
+                            <div class="item-info">
+                                <span class="item-title">${item.nome} ${!item.disponivel ? '<span class="badge-disabled">Pausado</span>' : ''}</span>
+                                <span class="item-desc">[${catNome}] ${item.descricao || ''}</span>
+                                <span class="item-price">R$ ${item.preco}</span>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button class="btn-icon" onclick="editarItem('${item.id}')"><i class="fa-solid fa-pen"></i></button>
+                            <button class="btn-icon delete" onclick="excluirItem('${item.id}')"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Modais e Operações
+        function fecharModais() {
+            document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+        }
+
+        function abrirModalCategoria() {
+            document.getElementById('catId').value = '';
+            document.getElementById('catNome').value = '';
+            document.getElementById('titleModalCat').innerText = 'Nova Categoria';
+            document.getElementById('modalCategoria').classList.add('active');
+        }
+
+        function salvarCategoria(e) {
+            e.preventDefault();
+            const id = document.getElementById('catId').value;
+            const nome = document.getElementById('catNome').value;
+
+            if(id) {
+                const c = db.categorias.find(x => x.id === id);
+                if(c) c.nome = nome;
+            } else {
+                db.categorias.push({ id: 'cat_' + Date.now(), nome, ordem: db.categorias.length + 1 });
+            }
+            fecharModais();
+            render();
+        }
+
+        function editarCategoria(id) {
+            const c = db.categorias.find(x => x.id === id);
+            if(!c) return;
+            document.getElementById('catId').value = c.id;
+            document.getElementById('catNome').value = c.nome;
+            document.getElementById('titleModalCat').innerText = 'Editar Categoria';
+            document.getElementById('modalCategoria').classList.add('active');
+        }
+
+        function excluirCategoria(id) {
+            if(confirm('Deseja excluir esta categoria?')) {
+                db.categorias = db.categorias.filter(c => c.id !== id);
+                render();
+            }
+        }
+
+        function moverCategoria(idx, dir) {
+            const novoIdx = idx + dir;
+            if(novoIdx < 0 || novoIdx >= db.categorias.length) return;
+            const temp = db.categorias[idx];
+            db.categorias[idx] = db.categorias[novoIdx];
+            db.categorias[novoIdx] = temp;
+            db.categorias.forEach((c, i) => c.ordem = i + 1);
+            render();
+        }
+
+        function abrirModalItem() {
+            if(db.categorias.length === 0) return alert('Crie pelo menos uma categoria antes de adicionar itens!');
+            document.getElementById('itemId').value = '';
+            document.getElementById('itemNome').value = '';
+            document.getElementById('itemDescricao').value = '';
+            document.getElementById('itemPreco').value = '';
+            document.getElementById('itemDisponivel').checked = true;
+            document.getElementById('titleModalItem').innerText = 'Novo Item';
+
+            const sel = document.getElementById('itemCategoria');
+            sel.innerHTML = db.categorias.map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
+
+            document.getElementById('modalItem').classList.add('active');
+        }
+
+        function salvarItem(e) {
+            e.preventDefault();
+            const id = document.getElementById('itemId').value;
+            const itemData = {
+                categoriaId: document.getElementById('itemCategoria').value,
+                nome: document.getElementById('itemNome').value,
+                descricao: document.getElementById('itemDescricao').value,
+                preco: document.getElementById('itemPreco').value,
+                disponivel: document.getElementById('itemDisponivel').checked
+            };
+
+            if(id) {
+                const item = db.itens.find(x => x.id === id);
+                if(item) Object.assign(item, itemData);
+            } else {
+                itemData.id = 'item_' + Date.now();
+                itemData.ordem = db.itens.length + 1;
+                db.itens.push(itemData);
+            }
+            fecharModais();
+            render();
+        }
+
+        function editarItem(id) {
+            const item = db.itens.find(x => x.id === id);
+            if(!item) return;
+            abrirModalItem();
+            document.getElementById('itemId').value = item.id;
+            document.getElementById('itemCategoria').value = item.categoriaId;
+            document.getElementById('itemNome').value = item.nome;
+            document.getElementById('itemDescricao').value = item.descricao;
+            document.getElementById('itemPreco').value = item.preco;
+            document.getElementById('itemDisponivel').checked = item.disponivel;
+            document.getElementById('titleModalItem').innerText = 'Editar Item';
+        }
+
+        function excluirItem(id) {
+            if(confirm('Deseja excluir este item?')) {
+                db.itens = db.itens.filter(i => i.id !== id);
+                render();
+            }
+        }
+
+        function moverItem(idx, dir) {
+            const novoIdx = idx + dir;
+            if(novoIdx < 0 || novoIdx >= db.itens.length) return;
+            const temp = db.itens[idx];
+            db.itens[idx] = db.itens[novoIdx];
+            db.itens[novoIdx] = temp;
+            db.itens.forEach((it, i) => it.ordem = i + 1);
+            render();
+        }
+
+        carregarDados();
+    </script>
+</body>
+</html>

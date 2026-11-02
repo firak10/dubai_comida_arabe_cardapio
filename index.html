@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dubai Comida Árabe</title>
+    <!-- Font Poppins & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #0d0d0d;
+            --bg-card: #181818;
+            --primary-orange: #ff5722;
+            --secondary-orange: #ff8c00;
+            --text-main: #ffffff;
+            --text-sub: #b3b3b3;
+            --google-star: #ffc107;
+            --pix-blue-start: #00b4db;
+            --pix-blue-end: #0083b0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 15px;
+            position: relative;
+            overflow-x: hidden;
+            perspective: 1000px;
+        }
+
+        /* Fundo dinâmico com brilho radial suave */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(255, 87, 34, 0.18) 0%, rgba(0, 0, 0, 0) 70%);
+            z-index: 0;
+            animation: pulseGlow 6s infinite alternate ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.6; }
+            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+        }
+
+        /* Estrutura Flip Card 3D */
+        .flip-card {
+            background-color: transparent;
+            width: 100%;
+            max-width: 400px;
+            min-height: 520px;
+            perspective: 1000px;
+            z-index: 1;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            top: 0;
+            left: 0;
+        }
+
+        .flip-card-back {
+            transform: rotateY(180deg);
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Container da Logo com Animação */
+        .logo-wrapper {
+            position: relative;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+
+        .logo-img {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-orange);
+            box-shadow: 0 0 25px rgba(255, 87, 34, 0.4);
+            animation: logoPulse 3s infinite ease-in-out, fadeIn 1s ease-out;
+        }
+
+        @keyframes logoPulse {
+            0% { box-shadow: 0 0 15px rgba(255, 87, 34, 0.4); transform: scale(1); }
+            50% { box-shadow: 0 0 30px rgba(255, 140, 0, 0.7); transform: scale(1.03); }
+            100% { box-shadow: 0 0 15px rgba(255, 87, 34, 0.4); transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header-text {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header-text h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .header-text p {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            margin-top: 4px;
+        }
+
+        /* Lista de Links / Ações */
+        .links-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .btn-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: transform 0.15s ease, opacity 0.2s ease;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-link:active {
+            transform: scale(0.98);
+        }
+
+        .btn-menu {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-menu i {
+            color: var(--primary-orange);
+        }
+
+        .btn-google {
+            background: linear-gradient(135deg, var(--primary-orange), var(--secondary-orange));
+            color: #ffffff;
+            font-size: 1.05rem;
+            padding: 18px 20px;
+        }
+
+        .btn-google i.fa-star {
+            color: var(--google-star);
+        }
+
+        .btn-instagram {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-instagram i {
+            color: #e1306c;
+        }
+
+        .btn-whatsapp {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-whatsapp i {
+            color: #25d366;
+        }
+
+        .btn-pix {
+            background: linear-gradient(135deg, var(--pix-blue-start), var(--pix-blue-end));
+            color: #ffffff;
+            font-size: 1.05rem;
+            padding: 24px 20px;
+            margin-top: 5px;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0, 180, 219, 0.3);
+            flex-direction: row;
+            gap: 14px;
+            text-align: left;
+            justify-content: flex-start;
+        }
+
+        .btn-pix .pix-icon-box {
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 35px;
+        }
+
+        .btn-pix .pix-text-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .btn-pix .pix-subtext {
+            font-size: 0.8rem;
+            font-weight: 400;
+            opacity: 0.9;
+            letter-spacing: 0.3px;
+        }
+
+        /* Estilo do Verso (Cardápio Dinâmico) */
+        .cardapio-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 15px;
+        }
+
+        .cardapio-header h2 {
+            font-size: 1.2rem;
+            color: var(--primary-orange);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-voltar {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .cardapio-content {
+            width: 100%;
+            flex: 1;
+            overflow-y: auto;
+            text-align: left;
+            padding-right: 5px;
+        }
+
+        /* Scrollbar suave para o cardápio */
+        .cardapio-content::-webkit-scrollbar { width: 4px; }
+        .cardapio-content::-webkit-scrollbar-thumb { background: var(--primary-orange); border-radius: 4px; }
+
+        .categoria-titulo {
+            font-size: 1rem;
+            color: var(--secondary-orange);
+            margin: 15px 0 8px 0;
+            border-bottom: 1px solid rgba(255, 140, 0, 0.2);
+            padding-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .categoria-titulo:first-child { margin-top: 0; }
+
+        .item-cardapio {
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+        }
+
+        .item-topo {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .item-nome {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .item-preco {
+            font-weight: 700;
+            color: var(--primary-orange);
+            font-size: 0.95rem;
+        }
+
+        .item-descricao {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            margin-top: 2px;
+            line-height: 1.2;
+        }
+
+        /* Mensagem Toast de Sucesso */
+        .toast {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #2e7d32;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            transition: bottom 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            bottom: 30px;
+            opacity: 1;
+        }
+
+        /* Rodapé */
+        footer {
+            margin-top: 35px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            z-index: 1;
+        }
+
+        footer a {
+            color: var(--text-sub);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        footer a:hover, footer a:active {
+            color: var(--primary-orange);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="flip-card" id="flipCard">
+        <div class="flip-card-inner">
+            
+            <!-- FRENTE DO CARTÃO -->
+            <div class="flip-card-front">
+                <!-- Logo animada -->
+                <div class="logo-wrapper">
+                    <img src="img/logo.jpeg" alt="Dubai Comida Árabe" class="logo-img">
+                </div>
+
+                <div class="header-text">
+                    <h1>Dubai Comida Árabe</h1>
+                    <p>Sua opinião é muito importante para nós!</p>
+                </div>
+
+                <!-- Botões de Ação -->
+                <div class="links-container">
+                    <!-- Botão Cardápio (Gira o Cartão) -->
+                    <button class="btn-link btn-menu" onclick="girarCartao()">
+                        <i class="fa-solid fa-utensils fa-lg"></i>
+                        <span>Ver Cardápio</span>
+                    </button>
+
+                    <!-- Destaque Google Reviews -->
+                    <a href="https://search.google.com/local/writereview?placeid=ChIJGUyXKZ4R6JQRsSP22OmbQLU" target="_blank" class="btn-link btn-google">
+                        <i class="fa-solid fa-star"></i>
+                        <span>Avalie-nos no Google</span>
+                    </a>
+
+                    <!-- Instagram -->
+                    <a href="https://www.instagram.com/dubaicomidasarabes" target="_blank" class="btn-link btn-instagram">
+                        <i class="fa-brands fa-instagram fa-lg"></i>
+                        <span>Siga no Instagram</span>
+                    </a>
+
+                    <!-- WhatsApp -->
+                    <a href="https://api.whatsapp.com/send?phone=554298144493" target="_blank" class="btn-link btn-whatsapp">
+                        <i class="fa-brands fa-whatsapp fa-lg"></i>
+                        <span>Fale no WhatsApp</span>
+                    </a>
+
+                    <!-- Botão Pix -->
+                    <button class="btn-link btn-pix" onclick="copiarPix()">
+                        <div class="pix-icon-box">
+                            <i class="fa-solid fa-qrcode"></i>
+                        </div>
+                        <div class="pix-text-container">
+                            <span>Copiar Chave Pix (CNPJ)</span>
+                            <div class="pix-subtext">Toque para copiar o CNPJ</div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- VERSO DO CARTÃO (CARDÁPIO KV) -->
+            <div class="flip-card-back">
+                <div class="cardapio-header">
+                    <h2><i class="fa-solid fa-book-open"></i> Cardápio</h2>
+                    <button class="btn-voltar" onclick="girarCartao()">
+                        <i class="fa-solid fa-arrow-left"></i> Voltar
+                    </button>
+                </div>
+                <div class="cardapio-content" id="cardapioContainer">
+                    <p style="text-align: center; color: var(--text-sub); margin-top: 40px;">
+                        Carregando cardápio...
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Toast de Notificação -->
+    <div id="toast" class="toast">
+        <i class="fa-solid fa-check-circle"></i>
+        <span>Chave Pix copiada com sucesso!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        Desenvolvido por <a href="https://www.instagram.com/digitalcardpg" target="_blank">Digital Card</a>
+    </footer>
+
+    <script>
+        function girarCartao() {
+            const card = document.getElementById('flipCard');
+            card.classList.toggle('flipped');
+        }
+
+        function copiarPix() {
+            const chavePix = "46991044000121";
+            navigator.clipboard.writeText(chavePix).then(() => {
+                const toast = document.getElementById("toast");
+                toast.classList.add("show");
+                setTimeout(() => {
+                    toast.classList.remove("show");
+                }, 2500);
+            }).catch(err => {
+                console.error('Erro ao copiar: ', err);
+            });
+        }
+
+        // Buscar dados do KV via Worker
+        async function carregarCardapio() {
+            const container = document.getElementById('cardapioContainer');
+            try {
+                const response = await fetch('/api/cardapio');
+                if (!response.ok) throw new Error('Erro na rede');
+                
+                const data = await response.json();
+                
+                if (!data.categorias || data.categorias.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; color: var(--text-sub); margin-top: 40px;">Nenhum item cadastrado no cardápio.</p>';
+                    return;
+                }
+
+                let html = '';
+                // Ordenar categorias
+                const categorias = data.categorias.sort((a, b) => a.ordem - b.ordem);
+
+                categorias.forEach(cat => {
+                    // Filtrar e ordenar itens disponíveis da categoria
+                    const itensCat = (data.itens || [])
+                        .filter(i => i.categoriaId === cat.id && i.disponivel !== false)
+                        .sort((a, b) => a.ordem - b.ordem);
+
+                    if (itensCat.length > 0) {
+                        html += `<div class="categoria-titulo">${cat.nome}</div>`;
+                        itensCat.forEach(item => {
+                            html += `
+                                <div class="item-cardapio">
+                                    <div class="item-topo">
+                                        <span class="item-nome">${item.nome}</span>
+                                        <span class="item-preco">R$ ${item.preco}</span>
+                                    </div>
+                                    ${item.descricao ? `<div class="item-descricao">${item.descricao}</div>` : ''}
+                                </div>
+                            `;
+                        });
+                    }
+                });
+
+                container.innerHTML = html || '<p style="text-align: center; color: var(--text-sub); margin-top: 40px;">Nenhum item disponível no momento.</p>';
+
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = '<p style="text-align: center; color: #ff4444; margin-top: 40px;">Erro ao carregar o cardápio.</p>';
+            }
+        }
+
+        // Carrega o cardápio assim que a página é aberta
+        carregarCardapio();
+    </script>
+</body>
+</html>
