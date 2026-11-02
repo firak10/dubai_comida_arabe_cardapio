@@ -352,9 +352,29 @@
         }
 
         .item-cardapio {
+            display: flex;
+            gap: 12px;
+            align-items: center;
             margin-bottom: 12px;
-            padding-bottom: 8px;
+            padding-bottom: 10px;
             border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+        }
+
+        .item-img {
+            width: 55px;
+            height: 55px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #222;
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .item-detalhes {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
         }
 
         .item-topo {
@@ -365,20 +385,19 @@
 
         .item-nome {
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: var(--text-main);
         }
 
         .item-preco {
             font-weight: 700;
             color: var(--primary-orange);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         .item-descricao {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--text-sub);
-            margin-top: 2px;
             line-height: 1.2;
         }
 
@@ -394,7 +413,7 @@
             border-radius: 25px;
             font-size: 0.9rem;
             font-weight: 600;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
             transition: bottom 0.3s ease-in-out, opacity 0.3s ease-in-out;
             z-index: 100;
             display: flex;
@@ -539,16 +558,27 @@
             });
         }
 
-        // Buscar dados do KV via Worker
+        // Função para converter links do Google Drive em link direto de imagem
+        function converterUrlGoogleDrive(url) {
+            if (!url) return '';
+            url = url.trim();
+            const driveRegex = /(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)|lh3\.googleusercontent\.com\/d\/)([a-zA-Z0-9_-]+)/;
+            const match = url.match(driveRegex);
+            if (match && match[1]) {
+                return `https://lh3.googleusercontent.com/d/${match[1]}`;
+            }
+            return url;
+        }
+
         // Buscar dados do KV via Worker
         async function carregarCardapio() {
             const container = document.getElementById('cardapioContainer');
 
             container.innerHTML = `
-        <p style="text-align:center; color:var(--text-sub); margin-top:40px;">
-            Carregando cardápio...
-        </p>
-    `;
+                <p style="text-align:center; color:var(--text-sub); margin-top:40px;">
+                    Carregando cardápio...
+                </p>
+            `;
 
             try {
                 const response = await fetch('/api/cardapio', {
@@ -562,32 +592,26 @@
 
                 const data = await response.json();
 
-                console.log('Dados recebidos do cardápio:', data);
-
-                // Validar estrutura dos dados
                 if (!data || !Array.isArray(data.categorias) || !Array.isArray(data.itens)) {
                     throw new Error('Estrutura do JSON inválida.');
                 }
 
                 if (data.categorias.length === 0) {
                     container.innerHTML = `
-                <p style="text-align:center; color:var(--text-sub); margin-top:40px;">
-                    Nenhuma categoria cadastrada.
-                </p>
-            `;
+                        <p style="text-align:center; color:var(--text-sub); margin-top:40px;">
+                            Nenhuma categoria cadastrada.
+                        </p>
+                    `;
                     return;
                 }
 
                 let html = '';
 
-                // Ordenar categorias sem modificar o objeto original
                 const categorias = [...data.categorias].sort(
                     (a, b) => (Number(a.ordem) || 0) - (Number(b.ordem) || 0)
                 );
 
                 categorias.forEach(cat => {
-
-                    // Buscar itens pertencentes à categoria
                     const itensCat = data.itens
                         .filter(item =>
                             String(item.categoriaId) === String(cat.id) &&
@@ -600,55 +624,44 @@
                     if (itensCat.length === 0) return;
 
                     html += `
-                <div class="categoria-titulo">
-                    ${cat.nome}
-                </div>
-            `;
+                        <div class="categoria-titulo">
+                            ${cat.nome}
+                        </div>
+                    `;
 
                     itensCat.forEach(item => {
+                        const imgUrl = converterUrlGoogleDrive(item.imagem);
+                        // Se houver imagem, cria a tag img; se não houver, exibe apenas os detalhes
+                        const imgTag = imgUrl ? `<img src="${imgUrl}" class="item-img" alt="${item.nome}" onerror="this.style.display='none'">` : '';
 
                         html += `
-                    <div class="item-cardapio">
-
-                        <div class="item-topo">
-                            <span class="item-nome">
-                                ${item.nome}
-                            </span>
-
-                            <span class="item-preco">
-                                R$ ${item.preco}
-                            </span>
-                        </div>
-
-                        ${item.descricao ? `
-                            <div class="item-descricao">
-                                ${item.descricao}
+                            <div class="item-cardapio">
+                                ${imgTag}
+                                <div class="item-detalhes">
+                                    <div class="item-topo">
+                                        <span class="item-nome">${item.nome}</span>
+                                        <span class="item-preco">R$ ${item.preco}</span>
+                                    </div>
+                                    ${item.descricao ? `<div class="item-descricao">${item.descricao}</div>` : ''}
+                                </div>
                             </div>
-                        ` : ''}
-
-                    </div>
-                `;
+                        `;
                     });
                 });
 
                 container.innerHTML = html || `
-            <p style="text-align:center; color:var(--text-sub); margin-top:40px;">
-                Nenhum item disponível no momento.
-            </p>
-        `;
+                    <p style="text-align:center; color:var(--text-sub); margin-top:40px;">
+                        Nenhum item disponível no momento.
+                    </p>
+                `;
 
             } catch (err) {
-
                 console.error('Erro ao carregar cardápio:', err);
-
                 container.innerHTML = `
-            <p style="text-align:center; color:#ff4444; margin-top:40px;">
-                Erro ao carregar o cardápio.
-            </p>
-            <p style="text-align:center; color:var(--text-sub); font-size:0.75rem; margin-top:10px;">
-                Verifique sua conexão e tente novamente.
-            </p>
-        `;
+                    <p style="text-align:center; color:#ff4444; margin-top:40px;">
+                        Erro ao carregar o cardápio.
+                    </p>
+                `;
             }
         }
 

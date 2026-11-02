@@ -56,6 +56,16 @@
         .item-desc { font-size: 0.8rem; color: var(--text-sub); }
         .item-price { color: var(--primary-orange); font-weight: 600; font-size: 0.9rem; }
         
+        /* Thumbnail da imagem no painel */
+        .item-thumb {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #333;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
         .actions { display: flex; gap: 8px; }
         .btn-icon { background: none; border: none; color: var(--text-sub); cursor: pointer; font-size: 1.1rem; padding: 5px; }
         .btn-icon:hover { color: #fff; }
@@ -128,6 +138,7 @@
                 <input type="text" id="itemNome" placeholder="Nome do Prato / Bebida" required>
                 <textarea id="itemDescricao" placeholder="Descrição / Ingredientes" rows="3"></textarea>
                 <input type="text" id="itemPreco" placeholder="Preço (Ex: 25.00)" required>
+                <input type="url" id="itemImagem" placeholder="URL da Imagem (ou Link do Google Drive)">
                 <label style="display:flex; align-items:center; gap:8px; font-size:0.9rem; cursor:pointer;">
                     <input type="checkbox" id="itemDisponivel" checked style="width:auto;"> Item Disponível no Cardápio
                 </label>
@@ -141,6 +152,22 @@
 
     <script>
         let db = { categorias: [], itens: [] };
+
+        // Função para converter links do Google Drive em link direto de imagem
+        function converterUrlGoogleDrive(url) {
+            if (!url) return '';
+            url = url.trim();
+            
+            // Padrão do Google Drive (file/d/ID ou id=ID)
+            const driveRegex = /(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)|lh3\.googleusercontent\.com\/d\/)([a-zA-Z0-9_-]+)/;
+            const match = url.match(driveRegex);
+            
+            if (match && match[1]) {
+                // Retorna URL direta universal de imagem do Google Drive
+                return `https://lh3.googleusercontent.com/d/${match[1]}`;
+            }
+            return url;
+        }
 
         async function carregarDados() {
             try {
@@ -197,13 +224,16 @@
             db.itens.sort((a,b) => a.ordem - b.ordem).forEach((item, idx) => {
                 const cat = db.categorias.find(c => c.id === item.categoriaId);
                 const catNome = cat ? cat.nome : 'Sem Categoria';
+                const imgHtml = item.imagem ? `<img src="${item.imagem}" class="item-thumb" alt="${item.nome}" onerror="this.style.display='none'">` : '';
+
                 itemContainer.innerHTML += `
                     <div class="list-item">
-                        <div style="display:flex; align-items:center; gap:10px;">
+                        <div style="display:flex; align-items:center; gap:12px;">
                             <div class="order-controls">
                                 <button class="order-btn" onclick="moverItem(${idx}, -1)"><i class="fa-solid fa-chevron-up"></i></button>
                                 <button class="order-btn" onclick="moverItem(${idx}, 1)"><i class="fa-solid fa-chevron-down"></i></button>
                             </div>
+                            ${imgHtml}
                             <div class="item-info">
                                 <span class="item-title">${item.nome} ${!item.disponivel ? '<span class="badge-disabled">Pausado</span>' : ''}</span>
                                 <span class="item-desc">[${catNome}] ${item.descricao || ''}</span>
@@ -278,6 +308,7 @@
             document.getElementById('itemNome').value = '';
             document.getElementById('itemDescricao').value = '';
             document.getElementById('itemPreco').value = '';
+            document.getElementById('itemImagem').value = '';
             document.getElementById('itemDisponivel').checked = true;
             document.getElementById('titleModalItem').innerText = 'Novo Item';
 
@@ -290,11 +321,14 @@
         function salvarItem(e) {
             e.preventDefault();
             const id = document.getElementById('itemId').value;
+            const rawUrl = document.getElementById('itemImagem').value;
+
             const itemData = {
                 categoriaId: document.getElementById('itemCategoria').value,
                 nome: document.getElementById('itemNome').value,
                 descricao: document.getElementById('itemDescricao').value,
                 preco: document.getElementById('itemPreco').value,
+                imagem: converterUrlGoogleDrive(rawUrl),
                 disponivel: document.getElementById('itemDisponivel').checked
             };
 
@@ -319,6 +353,7 @@
             document.getElementById('itemNome').value = item.nome;
             document.getElementById('itemDescricao').value = item.descricao;
             document.getElementById('itemPreco').value = item.preco;
+            document.getElementById('itemImagem').value = item.imagem || '';
             document.getElementById('itemDisponivel').checked = item.disponivel;
             document.getElementById('titleModalItem').innerText = 'Editar Item';
         }
