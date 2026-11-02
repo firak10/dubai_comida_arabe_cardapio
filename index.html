@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,7 @@
     <!-- Font Poppins & FontAwesome -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
         :root {
             --bg-dark: #0d0d0d;
@@ -59,8 +60,15 @@
         }
 
         @keyframes pulseGlow {
-            0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.6; }
-            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            0% {
+                transform: translate(-50%, -50%) scale(0.85);
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
         }
 
         /* Estrutura Flip Card 3D */
@@ -68,9 +76,10 @@
             background-color: transparent;
             width: 100%;
             max-width: 400px;
+            height: 520px;
             min-height: 520px;
             perspective: 1000px;
-            z-index: 1;
+            position: relative;
         }
 
         .flip-card-inner {
@@ -86,7 +95,8 @@
             transform: rotateY(180deg);
         }
 
-        .flip-card-front, .flip-card-back {
+        .flip-card-front,
+        .flip-card-back {
             position: absolute;
             width: 100%;
             height: 100%;
@@ -126,14 +136,32 @@
         }
 
         @keyframes logoPulse {
-            0% { box-shadow: 0 0 15px rgba(255, 87, 34, 0.4); transform: scale(1); }
-            50% { box-shadow: 0 0 30px rgba(255, 140, 0, 0.7); transform: scale(1.03); }
-            100% { box-shadow: 0 0 15px rgba(255, 87, 34, 0.4); transform: scale(1); }
+            0% {
+                box-shadow: 0 0 15px rgba(255, 87, 34, 0.4);
+                transform: scale(1);
+            }
+
+            50% {
+                box-shadow: 0 0 30px rgba(255, 140, 0, 0.7);
+                transform: scale(1.03);
+            }
+
+            100% {
+                box-shadow: 0 0 15px rgba(255, 87, 34, 0.4);
+                transform: scale(1);
+            }
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .header-text {
@@ -300,8 +328,14 @@
         }
 
         /* Scrollbar suave para o cardápio */
-        .cardapio-content::-webkit-scrollbar { width: 4px; }
-        .cardapio-content::-webkit-scrollbar-thumb { background: var(--primary-orange); border-radius: 4px; }
+        .cardapio-content::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .cardapio-content::-webkit-scrollbar-thumb {
+            background: var(--primary-orange);
+            border-radius: 4px;
+        }
 
         .categoria-titulo {
             font-size: 1rem;
@@ -313,7 +347,9 @@
             letter-spacing: 0.5px;
         }
 
-        .categoria-titulo:first-child { margin-top: 0; }
+        .categoria-titulo:first-child {
+            margin-top: 0;
+        }
 
         .item-cardapio {
             margin-bottom: 12px;
@@ -358,7 +394,7 @@
             border-radius: 25px;
             font-size: 0.9rem;
             font-weight: 600;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
             transition: bottom 0.3s ease-in-out, opacity 0.3s ease-in-out;
             z-index: 100;
             display: flex;
@@ -389,16 +425,18 @@
             transition: color 0.2s;
         }
 
-        footer a:hover, footer a:active {
+        footer a:hover,
+        footer a:active {
             color: var(--primary-orange);
         }
     </style>
 </head>
+
 <body>
 
     <div class="flip-card" id="flipCard">
         <div class="flip-card-inner">
-            
+
             <!-- FRENTE DO CARTÃO -->
             <div class="flip-card-front">
                 <!-- Logo animada -->
@@ -420,19 +458,22 @@
                     </button>
 
                     <!-- Destaque Google Reviews -->
-                    <a href="https://search.google.com/local/writereview?placeid=ChIJGUyXKZ4R6JQRsSP22OmbQLU" target="_blank" class="btn-link btn-google">
+                    <a href="https://search.google.com/local/writereview?placeid=ChIJGUyXKZ4R6JQRsSP22OmbQLU"
+                        target="_blank" class="btn-link btn-google">
                         <i class="fa-solid fa-star"></i>
                         <span>Avalie-nos no Google</span>
                     </a>
 
                     <!-- Instagram -->
-                    <a href="https://www.instagram.com/dubaicomidasarabes" target="_blank" class="btn-link btn-instagram">
+                    <a href="https://www.instagram.com/dubaicomidasarabes" target="_blank"
+                        class="btn-link btn-instagram">
                         <i class="fa-brands fa-instagram fa-lg"></i>
                         <span>Siga no Instagram</span>
                     </a>
 
                     <!-- WhatsApp -->
-                    <a href="https://api.whatsapp.com/send?phone=554298144493" target="_blank" class="btn-link btn-whatsapp">
+                    <a href="https://api.whatsapp.com/send?phone=554298144493" target="_blank"
+                        class="btn-link btn-whatsapp">
                         <i class="fa-brands fa-whatsapp fa-lg"></i>
                         <span>Fale no WhatsApp</span>
                     </a>
@@ -499,55 +540,120 @@
         }
 
         // Buscar dados do KV via Worker
+        // Buscar dados do KV via Worker
         async function carregarCardapio() {
             const container = document.getElementById('cardapioContainer');
+
+            container.innerHTML = `
+        <p style="text-align:center; color:var(--text-sub); margin-top:40px;">
+            Carregando cardápio...
+        </p>
+    `;
+
             try {
-                const response = await fetch('/api/cardapio');
-                if (!response.ok) throw new Error('Erro na rede');
-                
+                const response = await fetch('/api/cardapio', {
+                    method: 'GET',
+                    cache: 'no-store'
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+
                 const data = await response.json();
-                
-                if (!data.categorias || data.categorias.length === 0) {
-                    container.innerHTML = '<p style="text-align: center; color: var(--text-sub); margin-top: 40px;">Nenhum item cadastrado no cardápio.</p>';
+
+                console.log('Dados recebidos do cardápio:', data);
+
+                // Validar estrutura dos dados
+                if (!data || !Array.isArray(data.categorias) || !Array.isArray(data.itens)) {
+                    throw new Error('Estrutura do JSON inválida.');
+                }
+
+                if (data.categorias.length === 0) {
+                    container.innerHTML = `
+                <p style="text-align:center; color:var(--text-sub); margin-top:40px;">
+                    Nenhuma categoria cadastrada.
+                </p>
+            `;
                     return;
                 }
 
                 let html = '';
-                // Ordenar categorias
-                const categorias = data.categorias.sort((a, b) => a.ordem - b.ordem);
+
+                // Ordenar categorias sem modificar o objeto original
+                const categorias = [...data.categorias].sort(
+                    (a, b) => (Number(a.ordem) || 0) - (Number(b.ordem) || 0)
+                );
 
                 categorias.forEach(cat => {
-                    // Filtrar e ordenar itens disponíveis da categoria
-                    const itensCat = (data.itens || [])
-                        .filter(i => i.categoriaId === cat.id && i.disponivel !== false)
-                        .sort((a, b) => a.ordem - b.ordem);
 
-                    if (itensCat.length > 0) {
-                        html += `<div class="categoria-titulo">${cat.nome}</div>`;
-                        itensCat.forEach(item => {
-                            html += `
-                                <div class="item-cardapio">
-                                    <div class="item-topo">
-                                        <span class="item-nome">${item.nome}</span>
-                                        <span class="item-preco">R$ ${item.preco}</span>
-                                    </div>
-                                    ${item.descricao ? `<div class="item-descricao">${item.descricao}</div>` : ''}
-                                </div>
-                            `;
-                        });
-                    }
+                    // Buscar itens pertencentes à categoria
+                    const itensCat = data.itens
+                        .filter(item =>
+                            String(item.categoriaId) === String(cat.id) &&
+                            item.disponivel !== false
+                        )
+                        .sort((a, b) =>
+                            (Number(a.ordem) || 0) - (Number(b.ordem) || 0)
+                        );
+
+                    if (itensCat.length === 0) return;
+
+                    html += `
+                <div class="categoria-titulo">
+                    ${cat.nome}
+                </div>
+            `;
+
+                    itensCat.forEach(item => {
+
+                        html += `
+                    <div class="item-cardapio">
+
+                        <div class="item-topo">
+                            <span class="item-nome">
+                                ${item.nome}
+                            </span>
+
+                            <span class="item-preco">
+                                R$ ${item.preco}
+                            </span>
+                        </div>
+
+                        ${item.descricao ? `
+                            <div class="item-descricao">
+                                ${item.descricao}
+                            </div>
+                        ` : ''}
+
+                    </div>
+                `;
+                    });
                 });
 
-                container.innerHTML = html || '<p style="text-align: center; color: var(--text-sub); margin-top: 40px;">Nenhum item disponível no momento.</p>';
+                container.innerHTML = html || `
+            <p style="text-align:center; color:var(--text-sub); margin-top:40px;">
+                Nenhum item disponível no momento.
+            </p>
+        `;
 
             } catch (err) {
-                console.error(err);
-                container.innerHTML = '<p style="text-align: center; color: #ff4444; margin-top: 40px;">Erro ao carregar o cardápio.</p>';
+
+                console.error('Erro ao carregar cardápio:', err);
+
+                container.innerHTML = `
+            <p style="text-align:center; color:#ff4444; margin-top:40px;">
+                Erro ao carregar o cardápio.
+            </p>
+            <p style="text-align:center; color:var(--text-sub); font-size:0.75rem; margin-top:10px;">
+                Verifique sua conexão e tente novamente.
+            </p>
+        `;
             }
         }
 
-        // Carrega o cardápio assim que a página é abertaa
         carregarCardapio();
     </script>
 </body>
+
 </html>
