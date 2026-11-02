@@ -1,0 +1,14 @@
+name = "dubai-comida-arabe-cardapio"
+main = "worker.js"
+compatibility_date = "2024-09-23"
+
+# Configuração para servir os arquivos estáticos (HTML, imagens, etc.)
+[assets]
+directory = "./"
+
+# Configuração do KV Namespace associado
+[[kv_namespaces]]
+binding = "cardapio_dubai"
+id = "4d20d62dced5421a9a86222d9709e8fb"
+# Para ambiente de desenvolvimento local, podes opcionalmente usar um preview_id:
+# preview_id = "SEU_PREVIEW_KV_ID_AQUI"
